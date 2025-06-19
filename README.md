@@ -76,4 +76,4 @@ Follow the standard GitOps workflow:
 3. Submit a pull request
 4. After approval and merge, changes will be automatically deployed
 
-test2
+test

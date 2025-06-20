@@ -67,7 +67,7 @@ app.get('/pets', async (req, res) => {
 });
 
 // Get pet by ID
-app.get('/pets/:id', async (req, res) => {
+app.get('/pet/:id', async (req, res) => {
   try {
     const params = {
       TableName: tableName,
@@ -90,7 +90,7 @@ app.get('/pets/:id', async (req, res) => {
 });
 
 // Create pet
-app.post('/pets', async (req, res) => {
+app.post('/pet', async (req, res) => {
   try {
     const { name, species, breed, age, ownerName, ownerContact } = req.body;
     
@@ -125,7 +125,7 @@ app.post('/pets', async (req, res) => {
 });
 
 // Update pet
-app.put('/pets/:id', async (req, res) => {
+app.put('/pet/:id', async (req, res) => {
   try {
     const { name, species, breed, age, ownerName, ownerContact } = req.body;
     
@@ -175,7 +175,7 @@ app.put('/pets/:id', async (req, res) => {
 });
 
 // Delete pet
-app.delete('/pets/:id', async (req, res) => {
+app.delete('/pet/:id', async (req, res) => {
   try {
     const params = {
       TableName: tableName,

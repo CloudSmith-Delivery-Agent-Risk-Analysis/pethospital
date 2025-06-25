@@ -1,0 +1,854 @@
+{
+  "org_name": "CloudSmith-Delivery-Agent-Risk-Analysis",
+  "repo_name": "pethospital",
+  "repo_url": "https://github.com/CloudSmith-Delivery-Agent-Risk-Analysis/pethospital",
+  "infrastructure_providers": [
+    {
+      "provider_id": "pet_dynamodb_table",
+      "resource_type": "DynamoDB",
+      "resource_identifier": "pet-hospital-pets",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "DynamoDB table for storing pet data with pet details and owner information",
+      "interfaces": [
+        {
+          "interface_type": "database",
+          "endpoint_pattern": "dynamodb.${region}.amazonaws.com",
+          "operations": ["GetItem", "PutItem", "DeleteItem", "UpdateItem", "Scan", "Query"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "billing_mode": "PAY_PER_REQUEST",
+        "hash_key": "id",
+        "point_in_time_recovery": true,
+        "attributes": [
+          {
+            "name": "id",
+            "type": "S"
+          }
+        ]
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "environment_variables": ["DYNAMODB_TABLE=pet-hospital-pets"],
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "doctor_dynamodb_table",
+      "resource_type": "DynamoDB",
+      "resource_identifier": "pet-hospital-doctors",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "DynamoDB table for storing doctor data with doctor details and hospital affiliations",
+      "interfaces": [
+        {
+          "interface_type": "database",
+          "endpoint_pattern": "dynamodb.${region}.amazonaws.com",
+          "operations": ["GetItem", "PutItem", "DeleteItem", "UpdateItem", "Scan", "Query"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "billing_mode": "PAY_PER_REQUEST",
+        "hash_key": "id",
+        "point_in_time_recovery": true,
+        "attributes": [
+          {
+            "name": "id",
+            "type": "S"
+          }
+        ]
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "environment_variables": ["DYNAMODB_TABLE=pet-hospital-doctors"],
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "hospital_dynamodb_table",
+      "resource_type": "DynamoDB",
+      "resource_identifier": "pet-hospital-hospitals",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "DynamoDB table for storing hospital data with hospital details and services",
+      "interfaces": [
+        {
+          "interface_type": "database",
+          "endpoint_pattern": "dynamodb.${region}.amazonaws.com",
+          "operations": ["GetItem", "PutItem", "DeleteItem", "UpdateItem", "Scan", "Query"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "billing_mode": "PAY_PER_REQUEST",
+        "hash_key": "id",
+        "point_in_time_recovery": true,
+        "attributes": [
+          {
+            "name": "id",
+            "type": "S"
+          }
+        ]
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "environment_variables": ["DYNAMODB_TABLE=pet-hospital-hospitals"],
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "visits_dynamodb_table",
+      "resource_type": "DynamoDB",
+      "resource_identifier": "pet-hospital-visits",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "DynamoDB table for storing visit data with visit details and references to pets and doctors",
+      "interfaces": [
+        {
+          "interface_type": "database",
+          "endpoint_pattern": "dynamodb.${region}.amazonaws.com",
+          "operations": ["GetItem", "PutItem", "DeleteItem", "UpdateItem", "Scan", "Query"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "billing_mode": "PAY_PER_REQUEST",
+        "hash_key": "id",
+        "point_in_time_recovery": true,
+        "attributes": [
+          {
+            "name": "id",
+            "type": "S"
+          }
+        ]
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "billing_dynamodb_table",
+      "resource_type": "DynamoDB",
+      "resource_identifier": "pet-hospital-billing",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "DynamoDB table for storing billing data with billing details and references to visits",
+      "interfaces": [
+        {
+          "interface_type": "database",
+          "endpoint_pattern": "dynamodb.${region}.amazonaws.com",
+          "operations": ["GetItem", "PutItem", "DeleteItem", "UpdateItem", "Scan", "Query"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "billing_mode": "PAY_PER_REQUEST",
+        "hash_key": "id",
+        "point_in_time_recovery": true,
+        "attributes": [
+          {
+            "name": "id",
+            "type": "S"
+          }
+        ]
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "insurance_dynamodb_table",
+      "resource_type": "DynamoDB",
+      "resource_identifier": "pet-hospital-insurance",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "DynamoDB table for storing insurance data with insurance details and references to pets",
+      "interfaces": [
+        {
+          "interface_type": "database",
+          "endpoint_pattern": "dynamodb.${region}.amazonaws.com",
+          "operations": ["GetItem", "PutItem", "DeleteItem", "UpdateItem", "Scan", "Query"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "billing_mode": "PAY_PER_REQUEST",
+        "hash_key": "id",
+        "point_in_time_recovery": true,
+        "attributes": [
+          {
+            "name": "id",
+            "type": "S"
+          }
+        ]
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "pet_service_ecr",
+      "resource_type": "ECR",
+      "resource_identifier": "pet-hospital-pet-service",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "ECR repository for storing pet service container images",
+      "interfaces": [
+        {
+          "interface_type": "container_registry",
+          "endpoint_pattern": "${account_id}.dkr.ecr.${region}.amazonaws.com/pet-hospital-pet-service",
+          "operations": ["GetImage", "PutImage"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "image_tag_mutability": "MUTABLE",
+        "image_scanning_configuration": {
+          "scan_on_push": true
+        },
+        "lifecycle_policy": {
+          "keep_last_n_images": 10
+        }
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "doctor_service_ecr",
+      "resource_type": "ECR",
+      "resource_identifier": "pet-hospital-doctor-service",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "ECR repository for storing doctor service container images",
+      "interfaces": [
+        {
+          "interface_type": "container_registry",
+          "endpoint_pattern": "${account_id}.dkr.ecr.${region}.amazonaws.com/pet-hospital-doctor-service",
+          "operations": ["GetImage", "PutImage"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "image_tag_mutability": "MUTABLE",
+        "image_scanning_configuration": {
+          "scan_on_push": true
+        },
+        "lifecycle_policy": {
+          "keep_last_n_images": 10
+        }
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "hospital_service_ecr",
+      "resource_type": "ECR",
+      "resource_identifier": "pet-hospital-hospital-service",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "ECR repository for storing hospital service container images",
+      "interfaces": [
+        {
+          "interface_type": "container_registry",
+          "endpoint_pattern": "${account_id}.dkr.ecr.${region}.amazonaws.com/pet-hospital-hospital-service",
+          "operations": ["GetImage", "PutImage"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "image_tag_mutability": "MUTABLE",
+        "image_scanning_configuration": {
+          "scan_on_push": true
+        },
+        "lifecycle_policy": {
+          "keep_last_n_images": 10
+        }
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "frontend_ecr",
+      "resource_type": "ECR",
+      "resource_identifier": "pet-hospital-frontend",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "ECR repository for storing frontend application container images",
+      "interfaces": [
+        {
+          "interface_type": "container_registry",
+          "endpoint_pattern": "${account_id}.dkr.ecr.${region}.amazonaws.com/pet-hospital-frontend",
+          "operations": ["GetImage", "PutImage"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "image_tag_mutability": "MUTABLE",
+        "image_scanning_configuration": {
+          "scan_on_push": true
+        },
+        "lifecycle_policy": {
+          "keep_last_n_images": 10
+        }
+      },
+      "security": {
+        "access_control": "IAM role permissions through EKS node role"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "eks_cluster",
+      "resource_type": "EKS",
+      "resource_identifier": "pet-hospital-eks-cluster",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "EKS cluster for running pet hospital microservices",
+      "interfaces": [
+        {
+          "interface_type": "api",
+          "endpoint_pattern": "https://${cluster_endpoint}",
+          "operations": ["Kubernetes API operations"],
+          "authentication": "IAM Role and OIDC"
+        }
+      ],
+      "configuration": {
+        "kubernetes_version": "1.27",
+        "vpc_config": {
+          "subnet_ids": "private_subnets",
+          "endpoint_private_access": true,
+          "endpoint_public_access": true
+        },
+        "enabled_cluster_log_types": ["api", "audit", "authenticator", "controllerManager", "scheduler"],
+        "node_groups": {
+          "main": {
+            "desired_capacity": "Variable based on environment",
+            "instance_types": ["t3.medium/t3.large"],
+            "disk_size": "Variable based on environment"
+          }
+        }
+      },
+      "security": {
+        "access_control": "IAM roles with OIDC federation"
+      },
+      "deployment_details": {
+        "environment": "Variable (dev/prod)",
+        "region": "us-west-2"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "cloudwatch_monitoring",
+      "resource_type": "CloudWatch",
+      "resource_identifier": "pet-hospital-eks-cluster-*",
+      "file_path": "infrastructure/modules/monitoring/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "CloudWatch dashboards and alarms for monitoring pet hospital application",
+      "interfaces": [
+        {
+          "interface_type": "monitoring",
+          "endpoint_pattern": "cloudwatch.${region}.amazonaws.com",
+          "operations": ["PutMetricData", "GetDashboard", "GetMetricStatistics"],
+          "authentication": "IAM"
+        }
+      ],
+      "configuration": {
+        "dashboard": "pet-hospital-eks-cluster-dashboard",
+        "alarms": [
+          "pet-hospital-eks-cluster-api-latency",
+          "pet-hospital-eks-cluster-error-rate",
+          "pet-hospital-eks-cluster-pod-cpu-utilization",
+          "pet-hospital-eks-cluster-pod-memory-utilization",
+          "pet-hospital-eks-cluster-node-cpu-utilization",
+          "pet-hospital-eks-cluster-node-memory-utilization",
+          "pet-hospital-eks-cluster-node-disk-utilization",
+          "pet-hospital-eks-cluster-node-network-utilization"
+        ]
+      },
+      "security": {
+        "access_control": "IAM roles for EKS nodes and CloudWatch access"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "vpc_network",
+      "resource_type": "VPC",
+      "resource_identifier": "pet-hospital-vpc",
+      "file_path": "infrastructure/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "VPC network for pet hospital infrastructure",
+      "interfaces": [
+        {
+          "interface_type": "network",
+          "endpoint_pattern": "N/A",
+          "operations": ["Network traffic"],
+          "authentication": "VPC Security Groups"
+        }
+      ],
+      "configuration": {
+        "cidr_block": "10.0.0.0/16",
+        "availability_zones": ["us-west-2a", "us-west-2b", "us-west-2c"],
+        "private_subnets": ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"],
+        "public_subnets": ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"],
+        "enable_nat_gateway": true,
+        "single_nat_gateway": true,
+        "enable_dns_hostnames": true
+      },
+      "security": {
+        "access_control": "Security Groups and NACLs"
+      },
+      "provider_type": "internal"
+    },
+    {
+      "provider_id": "application_load_balancer",
+      "resource_type": "ELB",
+      "resource_identifier": "pet-hospital-eks-cluster-alb",
+      "file_path": "infrastructure/modules/eks/main.tf",
+      "infrastructure_type": "Terraform",
+      "description": "Application Load Balancer for pet hospital application",
+      "interfaces": [
+        {
+          "interface_type": "load_balancer",
+          "endpoint_pattern": "pet-hospital-eks-cluster-alb.[region].elb.amazonaws.com",
+          "operations": ["HTTP/HTTPS Traffic"],
+          "authentication": "None (Public)"
+        }
+      ],
+      "configuration": {
+        "load_balancer_type": "application",
+        "internal": false,
+        "security_groups": ["pet-hospital-eks-cluster-alb-sg"],
+        "enable_deletion_protection": false
+      },
+      "security": {
+        "access_control": "Security Groups"
+      },
+      "provider_type": "internal"
+    }
+  ],
+  "application_consumers": [
+    {
+      "consumer_id": "pet_service",
+      "component_type": "service",
+      "file_path": "backend/pet-service/server.js",
+      "language": "JavaScript",
+      "description": "Microservice for managing pet data, providing CRUD operations for pets",
+      "resource_discovery": {
+        "method": "environment variables",
+        "environment_variables": ["AWS_REGION", "DYNAMODB_TABLE"],
+        "configuration_files": []
+      },
+      "authentication": {
+        "method": "IAM role",
+        "role_references": ["node_role with dynamodb_access policy"]
+      },
+      "sdk_usage": {
+        "sdk_type": "aws-sdk-js",
+        "sdk_version": "^2.1450.0",
+        "clients": ["DynamoDB.DocumentClient"]
+      },
+      "package_dependencies": ["aws-sdk", "express", "body-parser", "cors", "dotenv", "uuid", "winston"],
+      "internal_dependencies": [
+        {
+          "resource_type": "DynamoDB",
+          "resource_name": "pet-hospital-pets",
+          "file_path": "infrastructure/main.tf"
+        }
+      ]
+    },
+    {
+      "consumer_id": "doctor_service",
+      "component_type": "service",
+      "file_path": "backend/doctor-service/server.js",
+      "language": "JavaScript",
+      "description": "Microservice for managing doctor data, providing CRUD operations for doctors and doctor-hospital relationships",
+      "resource_discovery": {
+        "method": "environment variables",
+        "environment_variables": ["AWS_REGION", "DYNAMODB_TABLE"],
+        "configuration_files": []
+      },
+      "authentication": {
+        "method": "IAM role",
+        "role_references": ["node_role with dynamodb_access policy"]
+      },
+      "sdk_usage": {
+        "sdk_type": "aws-sdk-js",
+        "sdk_version": "^2.1450.0",
+        "clients": ["DynamoDB.DocumentClient"]
+      },
+      "package_dependencies": ["aws-sdk", "express", "body-parser", "cors", "dotenv", "uuid", "winston"],
+      "internal_dependencies": [
+        {
+          "resource_type": "DynamoDB",
+          "resource_name": "pet-hospital-doctors",
+          "file_path": "infrastructure/main.tf"
+        }
+      ]
+    },
+    {
+      "consumer_id": "hospital_service",
+      "component_type": "service",
+      "file_path": "backend/hospital-service/server.js",
+      "language": "JavaScript",
+      "description": "Microservice for managing hospital data, providing CRUD operations for hospitals",
+      "resource_discovery": {
+        "method": "environment variables",
+        "environment_variables": ["AWS_REGION", "DYNAMODB_TABLE"],
+        "configuration_files": []
+      },
+      "authentication": {
+        "method": "IAM role",
+        "role_references": ["node_role with dynamodb_access policy"]
+      },
+      "sdk_usage": {
+        "sdk_type": "aws-sdk-js",
+        "sdk_version": "^2.1450.0",
+        "clients": ["DynamoDB.DocumentClient"]
+      },
+      "package_dependencies": ["aws-sdk", "express", "body-parser", "cors", "dotenv", "uuid", "winston"],
+      "internal_dependencies": [
+        {
+          "resource_type": "DynamoDB",
+          "resource_name": "pet-hospital-hospitals",
+          "file_path": "infrastructure/main.tf"
+        }
+      ]
+    },
+    {
+      "consumer_id": "frontend_app",
+      "component_type": "application",
+      "file_path": "frontend/src/pages/Pets.js",
+      "language": "JavaScript",
+      "description": "Frontend application for pet hospital management system, interacts with backend microservices",
+      "resource_discovery": {
+        "method": "environment variables",
+        "environment_variables": ["API_URL"],
+        "configuration_files": []
+      },
+      "authentication": {
+        "method": "API calls",
+        "role_references": []
+      },
+      "package_dependencies": ["react", "axios", "@mui/material", "react-router-dom"],
+      "internal_dependencies": []
+    }
+  ],
+  "connections": [
+    {
+      "connection_id": "pet_service_dynamodb_scan",
+      "consumer_id": "pet_service",
+      "provider_id": "pet_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "scan",
+      "access_type": "read",
+      "description": "Retrieve all pets from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.scan(params).promise();",
+      "source_file_path": "backend/pet-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "pet_service_dynamodb_get",
+      "consumer_id": "pet_service",
+      "provider_id": "pet_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "get",
+      "access_type": "read",
+      "description": "Retrieve specific pet by ID from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.get(params).promise();",
+      "source_file_path": "backend/pet-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "pet_service_dynamodb_put",
+      "consumer_id": "pet_service",
+      "provider_id": "pet_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "put",
+      "access_type": "write",
+      "description": "Create new pet in DynamoDB table",
+      "code_snippet": "await dynamoDB.put(params).promise();",
+      "source_file_path": "backend/pet-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "pet_service_dynamodb_update",
+      "consumer_id": "pet_service",
+      "provider_id": "pet_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "update",
+      "access_type": "write",
+      "description": "Update existing pet in DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.update(updateParams).promise();",
+      "source_file_path": "backend/pet-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "pet_service_dynamodb_delete",
+      "consumer_id": "pet_service",
+      "provider_id": "pet_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "delete",
+      "access_type": "delete",
+      "description": "Delete pet from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.delete(params).promise();",
+      "source_file_path": "backend/pet-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "doctor_service_dynamodb_scan",
+      "consumer_id": "doctor_service",
+      "provider_id": "doctor_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "scan",
+      "access_type": "read",
+      "description": "Retrieve all doctors from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.scan(params).promise();",
+      "source_file_path": "backend/doctor-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "doctor_service_dynamodb_get",
+      "consumer_id": "doctor_service",
+      "provider_id": "doctor_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "get",
+      "access_type": "read",
+      "description": "Retrieve specific doctor by ID from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.get(params).promise();",
+      "source_file_path": "backend/doctor-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "doctor_service_dynamodb_put",
+      "consumer_id": "doctor_service",
+      "provider_id": "doctor_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "put",
+      "access_type": "write",
+      "description": "Create new doctor in DynamoDB table",
+      "code_snippet": "await dynamoDB.put(params).promise();",
+      "source_file_path": "backend/doctor-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "doctor_service_dynamodb_update",
+      "consumer_id": "doctor_service",
+      "provider_id": "doctor_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "update",
+      "access_type": "write",
+      "description": "Update existing doctor in DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.update(updateParams).promise();",
+      "source_file_path": "backend/doctor-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "doctor_service_dynamodb_delete",
+      "consumer_id": "doctor_service",
+      "provider_id": "doctor_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "delete",
+      "access_type": "delete",
+      "description": "Delete doctor from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.delete(params).promise();",
+      "source_file_path": "backend/doctor-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "doctor_service_hospital_scan",
+      "consumer_id": "doctor_service",
+      "provider_id": "doctor_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "scan",
+      "access_type": "read",
+      "description": "Filter doctors by hospital ID",
+      "code_snippet": "const result = await dynamoDB.scan(params).promise();",
+      "source_file_path": "backend/doctor-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "medium",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "hospital_service_dynamodb_scan",
+      "consumer_id": "hospital_service",
+      "provider_id": "hospital_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "scan",
+      "access_type": "read",
+      "description": "Retrieve all hospitals from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.scan(params).promise();",
+      "source_file_path": "backend/hospital-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "hospital_service_dynamodb_get",
+      "consumer_id": "hospital_service",
+      "provider_id": "hospital_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "get",
+      "access_type": "read",
+      "description": "Retrieve specific hospital by ID from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.get(params).promise();",
+      "source_file_path": "backend/hospital-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "hospital_service_dynamodb_put",
+      "consumer_id": "hospital_service",
+      "provider_id": "hospital_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "put",
+      "access_type": "write",
+      "description": "Create new hospital in DynamoDB table",
+      "code_snippet": "await dynamoDB.put(params).promise();",
+      "source_file_path": "backend/hospital-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "hospital_service_dynamodb_update",
+      "consumer_id": "hospital_service",
+      "provider_id": "hospital_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "update",
+      "access_type": "write",
+      "description": "Update existing hospital in DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.update(updateParams).promise();",
+      "source_file_path": "backend/hospital-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "hospital_service_dynamodb_delete",
+      "consumer_id": "hospital_service",
+      "provider_id": "hospital_dynamodb_table",
+      "provider_resource_type": "DynamoDB",
+      "operation": "delete",
+      "access_type": "delete",
+      "description": "Delete hospital from DynamoDB table",
+      "code_snippet": "const result = await dynamoDB.delete(params).promise();",
+      "source_file_path": "backend/hospital-service/server.js",
+      "target_file_path": "infrastructure/main.tf",
+      "configuration_source": "environment variable",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    },
+    {
+      "connection_id": "frontend_alb",
+      "consumer_id": "frontend_app",
+      "provider_id": "application_load_balancer",
+      "provider_resource_type": "ELB",
+      "operation": "http_access",
+      "access_type": "read",
+      "description": "Frontend application exposed through ALB",
+      "code_snippet": "kubernetes.io/ingress.class: alb",
+      "source_file_path": "k8s/base/frontend-ingress.yaml",
+      "target_file_path": "infrastructure/modules/eks/main.tf",
+      "configuration_source": "configuration file",
+      "criticality": "high",
+      "connection_type": "direct",
+      "cross_repo": false
+    }
+  ],
+  "architecture": {
+    "application_type": "microservice",
+    "infrastructure_pattern": "container-based",
+    "deployment_approach": "CI/CD with ArgoCD",
+    "configuration_management": "Environment variables injected through Kubernetes manifests",
+    "critical_paths": [
+      {
+        "path_name": "pet_management",
+        "description": "Full flow for managing pet data through the application",
+        "components": ["frontend_app", "pet_service", "pet_dynamodb_table"]
+      },
+      {
+        "path_name": "doctor_management",
+        "description": "Full flow for managing doctor data through the application",
+        "components": ["frontend_app", "doctor_service", "doctor_dynamodb_table"]
+      },
+      {
+        "path_name": "hospital_management",
+        "description": "Full flow for managing hospital data through the application",
+        "components": ["frontend_app", "hospital_service", "hospital_dynamodb_table"]
+      }
+    ],
+    "security_model": {
+      "authentication": "IAM roles for EKS nodes access to AWS services",
+      "network_security": "VPC with private subnets for workloads",
+      "data_protection": "Limited access to DynamoDB tables through IAM policies"
+    },
+    "cross_repo_dependencies": {
+      "provides_to": [],
+      "consumes_from": [],
+      "shared_infrastructure": false
+    }
+  }
+}

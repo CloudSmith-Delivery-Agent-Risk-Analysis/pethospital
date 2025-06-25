@@ -5,37 +5,44 @@
   "provided_apis": [
     {
       "type": "rest",
+      "endpoint": "/health",
+      "method": "GET",
+      "service_name": "DoctorService",
+      "description": "Health check endpoint for the doctor service",
+      "file_path": "backend/doctor-service/server.js",
+      "responses": {
+        "200": {
+          "description": "Service is healthy",
+          "content_type": "application/json",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "rest",
       "endpoint": "/doctors",
       "method": "GET",
       "service_name": "DoctorService",
       "description": "Retrieves a list of all doctors",
       "file_path": "backend/doctor-service/server.js",
-      "parameters": {},
       "responses": {
         "200": {
-          "description": "List of all doctors",
+          "description": "Array of doctor objects",
           "content_type": "application/json",
           "schema": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "id": "string",
-                "firstName": "string",
-                "lastName": "string",
-                "specialization": "string",
-                "hospitalId": "string",
-                "email": "string",
-                "phone": "string",
-                "licenseNumber": "string",
-                "createdAt": "string",
-                "updatedAt": "string"
-              }
+              "type": "object"
             }
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while fetching doctors",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -59,29 +66,14 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Doctor unique identifier"
+            "description": "Doctor ID"
           }
         ]
       },
       "responses": {
         "200": {
-          "description": "Doctor details",
-          "content_type": "application/json",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "firstName": "string",
-              "lastName": "string",
-              "specialization": "string",
-              "hospitalId": "string",
-              "email": "string",
-              "phone": "string",
-              "licenseNumber": "string",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
-          }
+          "description": "Doctor object",
+          "content_type": "application/json"
         },
         "404": {
           "description": "Doctor not found",
@@ -94,7 +86,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while fetching doctor",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -121,22 +113,22 @@
             "firstName": {
               "type": "string",
               "required": true,
-              "description": "First name of the doctor"
+              "description": "Doctor's first name"
             },
             "lastName": {
               "type": "string",
               "required": true,
-              "description": "Last name of the doctor"
+              "description": "Doctor's last name"
             },
             "specialization": {
               "type": "string",
               "required": true,
-              "description": "Doctor's specialization area"
+              "description": "Doctor's specialization/specialty"
             },
             "hospitalId": {
               "type": "string",
               "required": true,
-              "description": "ID of the hospital the doctor is associated with"
+              "description": "ID of the hospital where the doctor works"
             },
             "email": {
               "type": "string",
@@ -161,23 +153,11 @@
           "description": "Doctor created successfully",
           "content_type": "application/json",
           "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "firstName": "string",
-              "lastName": "string",
-              "specialization": "string",
-              "hospitalId": "string",
-              "email": "string",
-              "phone": "string",
-              "licenseNumber": "string",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
+            "type": "object"
           }
         },
         "400": {
-          "description": "Bad request - missing required fields",
+          "description": "Missing required fields",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -187,7 +167,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while creating doctor",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -203,7 +183,7 @@
       "endpoint": "/doctors/{id}",
       "method": "PUT",
       "service_name": "DoctorService",
-      "description": "Updates an existing doctor's information",
+      "description": "Updates an existing doctor",
       "file_path": "backend/doctor-service/server.js",
       "parameters": {
         "path": [
@@ -211,7 +191,7 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Doctor unique identifier"
+            "description": "Doctor ID"
           }
         ],
         "body": {
@@ -222,22 +202,22 @@
             "firstName": {
               "type": "string",
               "required": false,
-              "description": "First name of the doctor"
+              "description": "Doctor's first name"
             },
             "lastName": {
               "type": "string",
               "required": false,
-              "description": "Last name of the doctor"
+              "description": "Doctor's last name"
             },
             "specialization": {
               "type": "string",
               "required": false,
-              "description": "Doctor's specialization area"
+              "description": "Doctor's specialization/specialty"
             },
             "hospitalId": {
               "type": "string",
               "required": false,
-              "description": "ID of the hospital the doctor is associated with"
+              "description": "ID of the hospital where the doctor works"
             },
             "email": {
               "type": "string",
@@ -262,19 +242,7 @@
           "description": "Doctor updated successfully",
           "content_type": "application/json",
           "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "firstName": "string",
-              "lastName": "string",
-              "specialization": "string",
-              "hospitalId": "string",
-              "email": "string",
-              "phone": "string",
-              "licenseNumber": "string",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
+            "type": "object"
           }
         },
         "404": {
@@ -288,7 +256,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while updating doctor",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -304,7 +272,7 @@
       "endpoint": "/doctors/{id}",
       "method": "DELETE",
       "service_name": "DoctorService",
-      "description": "Deletes a doctor by ID",
+      "description": "Deletes a doctor",
       "file_path": "backend/doctor-service/server.js",
       "parameters": {
         "path": [
@@ -312,7 +280,7 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Doctor unique identifier"
+            "description": "Doctor ID"
           }
         ]
       },
@@ -338,7 +306,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while deleting doctor",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -362,35 +330,23 @@
             "name": "hospitalId",
             "type": "string",
             "required": true,
-            "description": "Hospital unique identifier"
+            "description": "Hospital ID"
           }
         ]
       },
       "responses": {
         "200": {
-          "description": "List of doctors for the specified hospital",
+          "description": "Array of doctor objects for the specified hospital",
           "content_type": "application/json",
           "schema": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "id": "string",
-                "firstName": "string",
-                "lastName": "string",
-                "specialization": "string",
-                "hospitalId": "string",
-                "email": "string",
-                "phone": "string",
-                "licenseNumber": "string",
-                "createdAt": "string",
-                "updatedAt": "string"
-              }
+              "type": "object"
             }
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while fetching doctors for hospital",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -405,13 +361,12 @@
       "type": "rest",
       "endpoint": "/health",
       "method": "GET",
-      "service_name": "DoctorService",
-      "description": "Health check endpoint for doctor service",
-      "file_path": "backend/doctor-service/server.js",
-      "parameters": {},
+      "service_name": "HospitalService",
+      "description": "Health check endpoint for the hospital service",
+      "file_path": "backend/hospital-service/server.js",
       "responses": {
         "200": {
-          "description": "Service health status",
+          "description": "Service is healthy",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -429,32 +384,19 @@
       "service_name": "HospitalService",
       "description": "Retrieves a list of all hospitals",
       "file_path": "backend/hospital-service/server.js",
-      "parameters": {},
       "responses": {
         "200": {
-          "description": "List of all hospitals",
+          "description": "Array of hospital objects",
           "content_type": "application/json",
           "schema": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "id": "string",
-                "name": "string",
-                "address": "string",
-                "phone": "string",
-                "email": "string",
-                "capacity": "number",
-                "services": "array",
-                "operatingHours": "object",
-                "createdAt": "string",
-                "updatedAt": "string"
-              }
+              "type": "object"
             }
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while fetching hospitals",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -478,29 +420,14 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Hospital unique identifier"
+            "description": "Hospital ID"
           }
         ]
       },
       "responses": {
         "200": {
-          "description": "Hospital details",
-          "content_type": "application/json",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "name": "string",
-              "address": "string",
-              "phone": "string",
-              "email": "string",
-              "capacity": "number",
-              "services": "array",
-              "operatingHours": "object",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
-          }
+          "description": "Hospital object",
+          "content_type": "application/json"
         },
         "404": {
           "description": "Hospital not found",
@@ -513,7 +440,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while fetching hospital",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -540,7 +467,7 @@
             "name": {
               "type": "string",
               "required": true,
-              "description": "Name of the hospital"
+              "description": "Hospital name"
             },
             "address": {
               "type": "string",
@@ -565,7 +492,7 @@
             "services": {
               "type": "array",
               "required": false,
-              "description": "Services offered by the hospital"
+              "description": "List of services offered by the hospital"
             },
             "operatingHours": {
               "type": "object",
@@ -580,23 +507,11 @@
           "description": "Hospital created successfully",
           "content_type": "application/json",
           "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "name": "string",
-              "address": "string",
-              "phone": "string",
-              "email": "string",
-              "capacity": "number",
-              "services": "array",
-              "operatingHours": "object",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
+            "type": "object"
           }
         },
         "400": {
-          "description": "Bad request - missing required fields",
+          "description": "Missing required fields",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -606,7 +521,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while creating hospital",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -622,7 +537,7 @@
       "endpoint": "/hospitals/{id}",
       "method": "PUT",
       "service_name": "HospitalService",
-      "description": "Updates an existing hospital's information",
+      "description": "Updates an existing hospital",
       "file_path": "backend/hospital-service/server.js",
       "parameters": {
         "path": [
@@ -630,7 +545,7 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Hospital unique identifier"
+            "description": "Hospital ID"
           }
         ],
         "body": {
@@ -641,7 +556,7 @@
             "name": {
               "type": "string",
               "required": false,
-              "description": "Name of the hospital"
+              "description": "Hospital name"
             },
             "address": {
               "type": "string",
@@ -666,7 +581,7 @@
             "services": {
               "type": "array",
               "required": false,
-              "description": "Services offered by the hospital"
+              "description": "List of services offered by the hospital"
             },
             "operatingHours": {
               "type": "object",
@@ -681,19 +596,7 @@
           "description": "Hospital updated successfully",
           "content_type": "application/json",
           "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "name": "string",
-              "address": "string",
-              "phone": "string",
-              "email": "string",
-              "capacity": "number",
-              "services": "array",
-              "operatingHours": "object",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
+            "type": "object"
           }
         },
         "404": {
@@ -707,7 +610,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while updating hospital",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -723,7 +626,7 @@
       "endpoint": "/hospitals/{id}",
       "method": "DELETE",
       "service_name": "HospitalService",
-      "description": "Deletes a hospital by ID",
+      "description": "Deletes a hospital",
       "file_path": "backend/hospital-service/server.js",
       "parameters": {
         "path": [
@@ -731,7 +634,7 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Hospital unique identifier"
+            "description": "Hospital ID"
           }
         ]
       },
@@ -757,7 +660,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while deleting hospital",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -772,13 +675,12 @@
       "type": "rest",
       "endpoint": "/health",
       "method": "GET",
-      "service_name": "HospitalService",
-      "description": "Health check endpoint for hospital service",
-      "file_path": "backend/hospital-service/server.js",
-      "parameters": {},
+      "service_name": "PetService",
+      "description": "Health check endpoint for the pet service",
+      "file_path": "backend/pet-service/server.js",
       "responses": {
         "200": {
-          "description": "Service health status",
+          "description": "Service is healthy",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -796,31 +698,19 @@
       "service_name": "PetService",
       "description": "Retrieves a list of all pets",
       "file_path": "backend/pet-service/server.js",
-      "parameters": {},
       "responses": {
         "200": {
-          "description": "List of all pets",
+          "description": "Array of pet objects",
           "content_type": "application/json",
           "schema": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "id": "string",
-                "name": "string",
-                "species": "string",
-                "breed": "string",
-                "age": "number",
-                "ownerName": "string",
-                "ownerContact": "string",
-                "createdAt": "string",
-                "updatedAt": "string"
-              }
+              "type": "object"
             }
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while fetching pets",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -844,28 +734,14 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Pet unique identifier"
+            "description": "Pet ID"
           }
         ]
       },
       "responses": {
         "200": {
-          "description": "Pet details",
-          "content_type": "application/json",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "name": "string",
-              "species": "string",
-              "breed": "string",
-              "age": "number",
-              "ownerName": "string",
-              "ownerContact": "string",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
-          }
+          "description": "Pet object",
+          "content_type": "application/json"
         },
         "404": {
           "description": "Pet not found",
@@ -878,7 +754,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while fetching pet",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -905,32 +781,32 @@
             "name": {
               "type": "string",
               "required": true,
-              "description": "Name of the pet"
+              "description": "Pet name"
             },
             "species": {
               "type": "string",
               "required": true,
-              "description": "Species of the pet"
+              "description": "Pet species"
             },
             "breed": {
               "type": "string",
               "required": false,
-              "description": "Breed of the pet"
+              "description": "Pet breed"
             },
             "age": {
               "type": "number",
               "required": false,
-              "description": "Age of the pet"
+              "description": "Pet age"
             },
             "ownerName": {
               "type": "string",
               "required": true,
-              "description": "Name of the pet's owner"
+              "description": "Name of the pet owner"
             },
             "ownerContact": {
               "type": "string",
               "required": true,
-              "description": "Contact information for the pet's owner"
+              "description": "Contact information of the pet owner"
             }
           }
         }
@@ -940,22 +816,11 @@
           "description": "Pet created successfully",
           "content_type": "application/json",
           "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "name": "string",
-              "species": "string",
-              "breed": "string",
-              "age": "number",
-              "ownerName": "string",
-              "ownerContact": "string",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
+            "type": "object"
           }
         },
         "400": {
-          "description": "Bad request - missing required fields",
+          "description": "Missing required fields",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -965,7 +830,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while creating pet",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -981,7 +846,7 @@
       "endpoint": "/pets/{id}",
       "method": "PUT",
       "service_name": "PetService",
-      "description": "Updates an existing pet's information",
+      "description": "Updates an existing pet",
       "file_path": "backend/pet-service/server.js",
       "parameters": {
         "path": [
@@ -989,7 +854,7 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Pet unique identifier"
+            "description": "Pet ID"
           }
         ],
         "body": {
@@ -1000,32 +865,32 @@
             "name": {
               "type": "string",
               "required": false,
-              "description": "Name of the pet"
+              "description": "Pet name"
             },
             "species": {
               "type": "string",
               "required": false,
-              "description": "Species of the pet"
+              "description": "Pet species"
             },
             "breed": {
               "type": "string",
               "required": false,
-              "description": "Breed of the pet"
+              "description": "Pet breed"
             },
             "age": {
               "type": "number",
               "required": false,
-              "description": "Age of the pet"
+              "description": "Pet age"
             },
             "ownerName": {
               "type": "string",
               "required": false,
-              "description": "Name of the pet's owner"
+              "description": "Name of the pet owner"
             },
             "ownerContact": {
               "type": "string",
               "required": false,
-              "description": "Contact information for the pet's owner"
+              "description": "Contact information of the pet owner"
             }
           }
         }
@@ -1035,18 +900,7 @@
           "description": "Pet updated successfully",
           "content_type": "application/json",
           "schema": {
-            "type": "object",
-            "properties": {
-              "id": "string",
-              "name": "string",
-              "species": "string",
-              "breed": "string",
-              "age": "number",
-              "ownerName": "string",
-              "ownerContact": "string",
-              "createdAt": "string",
-              "updatedAt": "string"
-            }
+            "type": "object"
           }
         },
         "404": {
@@ -1060,7 +914,7 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while updating pet",
           "content_type": "application/json",
           "schema": {
             "type": "object",
@@ -1076,7 +930,7 @@
       "endpoint": "/pets/{id}",
       "method": "DELETE",
       "service_name": "PetService",
-      "description": "Deletes a pet by ID",
+      "description": "Deletes a pet",
       "file_path": "backend/pet-service/server.js",
       "parameters": {
         "path": [
@@ -1084,7 +938,7 @@
             "name": "id",
             "type": "string",
             "required": true,
-            "description": "Pet unique identifier"
+            "description": "Pet ID"
           }
         ]
       },
@@ -1110,33 +964,12 @@
           }
         },
         "500": {
-          "description": "Server error",
+          "description": "Server error while deleting pet",
           "content_type": "application/json",
           "schema": {
             "type": "object",
             "properties": {
               "error": "string"
-            }
-          }
-        }
-      }
-    },
-    {
-      "type": "rest",
-      "endpoint": "/health",
-      "method": "GET",
-      "service_name": "PetService",
-      "description": "Health check endpoint for pet service",
-      "file_path": "backend/pet-service/server.js",
-      "parameters": {},
-      "responses": {
-        "200": {
-          "description": "Service health status",
-          "content_type": "application/json",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "status": "string"
             }
           }
         }
@@ -1149,16 +982,19 @@
       "service": "DoctorService",
       "endpoint": "/api/doctors",
       "method": "GET",
-      "description": "Fetches all doctors to display in the doctors list",
+      "description": "Retrieves a list of all doctors",
       "file_path": "frontend/src/pages/Doctors.js",
       "expected_response": {
-        "id": "string",
-        "firstName": "string",
-        "lastName": "string",
-        "specialization": "string",
-        "hospitalId": "string",
-        "phone": "string",
-        "email": "string"
+        "type": "array",
+        "items": {
+          "id": "string",
+          "firstName": "string",
+          "lastName": "string",
+          "specialization": "string",
+          "hospitalId": "string",
+          "phone": "string",
+          "email": "string"
+        }
       }
     },
     {
@@ -1166,15 +1002,15 @@
       "service": "DoctorService",
       "endpoint": "/api/doctors",
       "method": "POST",
-      "description": "Creates a new doctor from the doctor form",
+      "description": "Creates a new doctor",
       "file_path": "frontend/src/pages/Doctors.js",
       "request_payload": {
         "firstName": "string",
         "lastName": "string",
         "specialization": "string",
         "hospitalId": "string",
-        "phone": "string",
         "email": "string",
+        "phone": "string",
         "licenseNumber": "string"
       },
       "expected_response": {
@@ -1183,8 +1019,8 @@
         "lastName": "string",
         "specialization": "string",
         "hospitalId": "string",
-        "phone": "string",
         "email": "string",
+        "phone": "string",
         "licenseNumber": "string",
         "createdAt": "string",
         "updatedAt": "string"
@@ -1195,15 +1031,18 @@
       "service": "HospitalService",
       "endpoint": "/api/hospitals",
       "method": "GET",
-      "description": "Fetches all hospitals to display in the hospitals list",
+      "description": "Retrieves a list of all hospitals",
       "file_path": "frontend/src/pages/Hospitals.js",
       "expected_response": {
-        "id": "string",
-        "name": "string",
-        "address": "string",
-        "phone": "string",
-        "email": "string",
-        "services": "array"
+        "type": "array",
+        "items": {
+          "id": "string",
+          "name": "string",
+          "address": "string",
+          "phone": "string",
+          "email": "string",
+          "services": "array"
+        }
       }
     },
     {
@@ -1211,7 +1050,7 @@
       "service": "HospitalService",
       "endpoint": "/api/hospitals",
       "method": "POST",
-      "description": "Creates a new hospital from the hospital form",
+      "description": "Creates a new hospital",
       "file_path": "frontend/src/pages/Hospitals.js",
       "request_payload": {
         "name": "string",
@@ -1226,9 +1065,7 @@
         "address": "string",
         "phone": "string",
         "email": "string",
-        "capacity": "number",
         "services": "array",
-        "operatingHours": "object",
         "createdAt": "string",
         "updatedAt": "string"
       }
@@ -1238,16 +1075,19 @@
       "service": "PetService",
       "endpoint": "/api/pets",
       "method": "GET",
-      "description": "Fetches all pets to display in the pets list",
+      "description": "Retrieves a list of all pets",
       "file_path": "frontend/src/pages/Pets.js",
       "expected_response": {
-        "id": "string",
-        "name": "string",
-        "species": "string",
-        "breed": "string",
-        "age": "number",
-        "ownerName": "string",
-        "ownerContact": "string"
+        "type": "array",
+        "items": {
+          "id": "string",
+          "name": "string",
+          "species": "string",
+          "breed": "string",
+          "age": "number",
+          "ownerName": "string",
+          "ownerContact": "string"
+        }
       }
     },
     {
@@ -1255,7 +1095,7 @@
       "service": "PetService",
       "endpoint": "/api/pets/{id}",
       "method": "DELETE",
-      "description": "Deletes a pet by ID",
+      "description": "Deletes a pet",
       "file_path": "frontend/src/pages/Pets.js",
       "expected_response": {
         "message": "string"
@@ -1264,9 +1104,9 @@
     {
       "type": "rest",
       "service": "PetService",
-      "endpoint": "/api/pets",
-      "method": "POST",
-      "description": "Creates a new pet from the pet form",
+      "endpoint": "/api/pets/{id}",
+      "method": "PUT",
+      "description": "Updates an existing pet",
       "file_path": "frontend/src/pages/Pets.js",
       "request_payload": {
         "name": "string",
@@ -1275,25 +1115,14 @@
         "age": "number",
         "ownerName": "string",
         "ownerContact": "string"
-      },
-      "expected_response": {
-        "id": "string",
-        "name": "string",
-        "species": "string",
-        "breed": "string",
-        "age": "number",
-        "ownerName": "string",
-        "ownerContact": "string",
-        "createdAt": "string",
-        "updatedAt": "string"
       }
     },
     {
       "type": "rest",
       "service": "PetService",
-      "endpoint": "/api/pets/{id}",
-      "method": "PUT",
-      "description": "Updates an existing pet's information",
+      "endpoint": "/api/pets",
+      "method": "POST",
+      "description": "Creates a new pet",
       "file_path": "frontend/src/pages/Pets.js",
       "request_payload": {
         "name": "string",
@@ -1302,16 +1131,6 @@
         "age": "number",
         "ownerName": "string",
         "ownerContact": "string"
-      },
-      "expected_response": {
-        "id": "string",
-        "name": "string",
-        "species": "string",
-        "breed": "string",
-        "age": "number",
-        "ownerName": "string",
-        "ownerContact": "string",
-        "updatedAt": "string"
       }
     },
     {
@@ -1319,58 +1138,32 @@
       "service": "PetService",
       "endpoint": "/api/pets",
       "method": "GET",
-      "description": "Fetches pets count for the dashboard",
-      "file_path": "frontend/src/pages/Dashboard.js",
-      "expected_response": [
-        {
-          "id": "string",
-          "name": "string",
-          "species": "string"
-        }
-      ]
+      "description": "Retrieves a list of all pets for the dashboard",
+      "file_path": "frontend/src/pages/Dashboard.js"
     },
     {
       "type": "rest",
       "service": "HospitalService",
       "endpoint": "/api/hospitals",
       "method": "GET",
-      "description": "Fetches hospitals count for the dashboard",
-      "file_path": "frontend/src/pages/Dashboard.js",
-      "expected_response": [
-        {
-          "id": "string",
-          "name": "string",
-          "address": "string"
-        }
-      ]
+      "description": "Retrieves a list of all hospitals for the dashboard",
+      "file_path": "frontend/src/pages/Dashboard.js"
     },
     {
       "type": "rest",
       "service": "DoctorService",
       "endpoint": "/api/doctors",
       "method": "GET",
-      "description": "Fetches doctors count for the dashboard",
-      "file_path": "frontend/src/pages/Dashboard.js",
-      "expected_response": [
-        {
-          "id": "string",
-          "firstName": "string",
-          "lastName": "string"
-        }
-      ]
+      "description": "Retrieves a list of all doctors for the dashboard",
+      "file_path": "frontend/src/pages/Dashboard.js"
     },
     {
       "type": "rest",
       "service": "VisitService",
       "endpoint": "/api/visits",
       "method": "GET",
-      "description": "Fetches visits count for the dashboard",
-      "file_path": "frontend/src/pages/Dashboard.js",
-      "expected_response": [
-        {
-          "id": "string"
-        }
-      ]
+      "description": "Retrieves a list of all visits for the dashboard",
+      "file_path": "frontend/src/pages/Dashboard.js"
     }
   ]
 }
